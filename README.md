@@ -1,118 +1,130 @@
-# Pentip 笔触
+﻿# PenTip
 
-基于 Electron 和 Vue 3的跨平台桌面应用，为创作者提供基于作品的AI辅助功能，支持小说、文章、剧本、图文、视频、音频等多种创作形式。
+## 📝 The Story
 
-## 🚀 项目特性
+As a knowledge management enthusiast, I've long been torn between **Logseq** and **Obsidian**, never fully satisfied with either:
 
-- **作品智能体** - 基于作品内容的智能体，更智能的创作辅助功能
-- **主流AI服务商** - 内置 DeepSeek、火山引擎等多个AI服务商
-- **语义搜索** - 基于LanceDB向量数据库的智能内容检索
-- **本地存储** - 作品数据存储，数据安全可控
-- **多系统支持** - 支持Windows、macOS、Linux等多个操作系统
+- **Logseq**'s block-based outliner and fleeting notes let me capture scattered thoughts as naturally as breathing — that frictionless recording experience is irreplaceable. But when fragments pile up, the process of organizing, categorizing, and connecting them becomes excruciating. I end up spending more time organizing than actually recording.
+- **Obsidian**'s bidirectional links and graph view provide fertile ground for deep creation, yet it lacks an efficient "idea catcher." Those fragmented thoughts that strike during commutes or late-night inspiration often slip away into the corners of memory, simply because the cost of opening Obsidian is too high.
 
-## ✨ 核心功能
+I needed a tool that seamlessly bridges **fragment capture** and **deep creation** — something that lets me jot down ideas as effortlessly as Logseq, while helping me refine and produce like Obsidian. Since I couldn't find the ideal answer on the market, I decided to build it myself.
 
-- **创作智能体** - 基于AI的创作智能体，提供创作辅助功能
-- **作品知识库** - 基于向量数据库的作品知识存储，用户可以根据作品内容进行搜索
-- **自定义模型** - 用户可以根据自己的需求自选AI服务商的模型
+**PenTip** was born from this need. It's a cross-platform desktop application focused on closing the loop from fragmented thoughts to complete works.
 
-## 📁 创作类型
+Built with Electron and Vue 3, it provides AI-powered creation assistance tailored to each work, supporting novels, articles, scripts, image-text content, video, audio, and more.
 
-- **文本创作**：支持小说、文章、剧本等网文创作，提供智能创作辅助功能
-- **图文创作**：支持小红书图文、公众号图文等形式的创作，提供输入主题自动创作功能
-- **视频创作**：支持视频创作，根据主题自动生成视频脚本，自动生成视频素材
-- **音频创作**：支持音频创作，根据主题自动生成口播稿和真人语音
+## 🗺️ Roadmap
 
-## 技术栈
+### Phase 1: Lightning Capture & Scene Adaptation
 
-- **前端**：Vue 3 + TypeScript + aive UI
-- **后端**：Electron + Node.js + TypeScript
-- **数据库**：LanceDB + SQLite
+> **Goal**: Achieve Logseq-like frictionless capture of fragmented thoughts, with tailored experiences for different recording scenarios.
 
-## 🛠️ 如何使用
+- **Quick Capture Panel** - A lightweight, globally-invokable input window for jotting down thoughts in natural language
+- **Scenario Templates** - Structured templates for work logs, daily journals, reading notes, etc.
+- **Tags & Quick Classification** - Lightweight categorization via tags and inline markers during capture
+- **Local-First Storage** - All data is offline-first, fully owned by the user
 
-### 📦 如何使用软件
+### Phase 2: AI-Powered Automated Organization
 
-1. **下载安装**：从 [项目主页](https://github.com/liqms/PenTip) 下载对应平台的安装包并安装
-2. **配置AI服务商**：在设置页面配置AI服务商的API密钥
-3. **创建作品**：点击「新建作品」按钮，选择创作类型
-4. **开始创作**：使用AI辅助功能进行创作，享受智能创作体验
+> **Goal**: Leverage AI to automatically classify, connect, and distill fragmented knowledge — eliminating the pain of manual organization.
 
-### 🤝 如何贡献代码
+- **Smart Categorization** - AI automatically analyzes the topic and type of fragmented content, suggesting categories
+- **Semantic Linking** - Automatically discovers semantic connections between fragments, building a knowledge network
+- **Auto Summarization** - Aggregates similar fragments and distills core insights and action items
+- **Periodic Review Push** - AI generates weekly/monthly knowledge review reports
 
-如果这个项目对你有帮助,欢迎给个 Star ⭐
+### Phase 3: TBD (Evolving with Real-World Feedback)
 
-欢迎贡献代码！请遵循以下步骤：
+> Product direction will evolve based on actual pain points and needs. Potential exploration areas include: deep creation with bidirectional linking, team collaboration and sharing, and support for more creative modalities.
 
-1. **Fork 仓库**：Fork 并克隆到您的本地机器
-2. **创建分支**：为您的更改创建分支
-3. **提交更改**：提交并推送您的更改
-4. **打开 Pull Request**：描述您的更改和原因
+## ⚙️ Design Philosophy
+
+### 💾 Local-First, Full Data Ownership
+
+I don't want my data locked into any cloud service, nor do I want to risk losing everything if a note app shuts down. All PenTip data is saved locally by default — users have full control over their files. Cloud sync is an optional value-add, not a core dependency.
+
+### 📂 Zero-Organization Philosophy
+
+> **Recording is organizing.**
+
+Traditional note apps force you to decide upfront: "Which folder does this note go into?" "Which project does it belong to?" But the value of fragmented thoughts lies in being **captured**, not **categorized**. PenTip's design principle is simple: you just write, let the machine handle classification and connection. No need to create documents, no folder structures to maintain — open, write, save.
+
+### 🖥️ Desktop-First, Mobile-Ready
+
+Creation and deep organization happen primarily on desktop — large screens, keyboards, and multitasking environments are where productive work thrives. But fragment capture often happens on mobile: during commutes, waiting in line, or when inspiration strikes before sleep. Phase 1 focuses on the desktop experience, with mobile capture to follow — so no thought gets lost, no matter the device.
+
+## 🧰 Tech Stack
+
+- **Frontend** - Vue 3 + TypeScript + Naive UI
+- **Backend** - Electron + Node.js + TypeScript
+- **Database** - LanceDB + SQLite
+
+## 🛠️ Getting Started
+
+### 📦 Using the App
+
+1. **Download & Install** - Get the installer for your platform from the [project homepage](https://github.com/liqms/PenTip)
+2. **Configure AI Provider** - Set up your API key in the settings page
+3. **Create a Work** - Click "New Work" and choose your creation type
+4. **Start Creating** - Enjoy AI-assisted creation
+
+### 🤝 Contributing
+
+If this project helps you, feel free to give it a Star ⭐
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork the repo** - Fork and clone to your local machine
+2. **Create a branch** - Create a branch for your changes
+3. **Commit your changes** - Commit and push your changes
+4. **Open a Pull Request** - Describe your changes and rationale
 
 ```bash
-# 克隆项目
+# Clone the project
 git clone https://github.com/liqms/PenTip.git
 cd PenTip
 
-# 安装依赖
+# Install dependencies
 pnpm install
 
-# 配置环境变量
+# Configure environment variables
 cp .env.example .env
-# 编辑.env文件，配置API密钥等信息
+# Edit the .env file to configure your API keys
 
-# 启动开发服务器
+# Start the dev server
 pnpm run dev
 ```
 
-## 📄 许可证
+## 📄 License
 
-### 个人使用
+### Personal Use
 
-本项目采用 [GNU Affero General Public License v3.0 (AGPLv3)](LICENSE) 开源。
-你可以自由地：
+This project is open-sourced under the [GNU Affero General Public License v3.0 (AGPLv3)](LICENSE).
 
-- ✅ 个人使用 - 用于学习、研究、个人项目
-- ✅ 分享 - 在任何媒介以任何形式复制、发行本作品
-- ✅ 修改 - 修改、转换或以本作品为基础进行创作
+You are free to:
 
-但需要遵守以下条款：
+- ✅ **Personal Use** - Use for learning, research, and personal projects
+- ✅ **Share** - Copy and redistribute the material in any medium or format
+- ✅ **Modify** - Remix, transform, or build upon the material
 
-- 📝 署名 - 必须给出适当的署名，提供指向本协议的链接，同时标明是否对原始作品作了修改
-- 🚫 非商业性使用 - 不得将本作品用于商业目的
-- 🔄 相同方式共享 - 如果你修改、转换或以本作品为基础进行创作，你必须以相同的协议分发你的作品
+Under the following terms:
 
-### 商业授权
+- 📝 **Attribution** - You must give appropriate credit, provide a link to the license, and indicate if changes were made
+- 🚫 **Non-Commercial** - You may not use the material for commercial purposes
+- 🔄 **ShareAlike** - If you remix, transform, or build upon the material, you must distribute your contributions under the same license
 
-如果你希望将本项目用于商业目的（包括但不限于）：
+### Commercial Use
 
-- 提供付费服务
-- 集成到商业产品
-- 作为 SaaS 服务运营
-- 其他盈利性用途
-- 
-请联系作者获取商业授权：
+If you wish to use this project for commercial purposes (including but not limited to):
+
+- Providing paid services
+- Integrating into commercial products
+- Operating as a SaaS service
+- Other for-profit use
+
+Please contact the author for a commercial license:
 
 - 📧 Email: liqms@msn.cn
-- 💬 微信: iclassink（微信添加好友后请备注：Pentip商业授权）
+- 💬 WeChat: iclassink (Please note: PenTip commercial license)
 
-默子会根据你的具体使用场景提供灵活的商业授权方案。
-
-### 免责声明
-本软件按"原样"提供，不提供任何形式的明示或暗示担保，包括但不限于适销性、特定用途的适用性和非侵权性的担保。在任何情况下，作者或版权持有人均不对任何索赔、损害或其他责任负责。
-
-## 📞 作者
-
-果果（iclassink） - AI创业者
-
-- 位置: 中国上海
-- 邮箱: liqms@msn.cn
-- 微信: iclassink（私人微信不解答任何技术问题）
-- 项目主页: https://github.com/liqms/PenTip
-- 问题反馈: https://github.com/liqms/PenTip/issues
-
-## 🙏 致谢
-
-感谢所有为本项目做出贡献的开发者！
-
-**如果这个项目帮到了你,欢迎分享给更多人!** 
+Flexible commercial licensing options are available based on your specific use case.
