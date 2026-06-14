@@ -1,5 +1,8 @@
 ﻿# PenTip
 
+> 🌐 [中文版（简体中文）](./README_CN.md)
+
+
 ## 📝 The Story
 
 As a knowledge management enthusiast, I've long been torn between **Logseq** and **Obsidian**, never fully satisfied with either:

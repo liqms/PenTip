@@ -1,5 +1,8 @@
 ﻿# PenTip
 
+> 📖 [English (English)](./README.md)
+
+
 ## 📝 产品故事
 
 作为一个知识管理爱好者，我长期在 **Logseq** 和 **Obsidian** 之间摇摆不定，却始终无法找到满意的解法：
