@@ -1,4 +1,4 @@
-﻿# PenTip
+# PenTip
 
 > 🌐 [中文版（简体中文）](./README_CN.md)
 
@@ -14,7 +14,6 @@ I needed a tool that seamlessly bridges **fragment capture** and **deep creation
 
 **PenTip** was born from this need. It's a cross-platform desktop application focused on closing the loop from fragmented thoughts to complete works.
 
-Built with Electron and Vue 3, it provides AI-powered creation assistance tailored to each work, supporting novels, articles, scripts, image-text content, video, audio, and more.
 
 ## 🗺️ Roadmap
 
@@ -58,31 +57,37 @@ Creation and deep organization happen primarily on desktop — large screens, ke
 
 ## 🧰 Tech Stack
 
-- **Frontend** - Vue 3 + TypeScript + Naive UI
-- **Backend** - Electron + Node.js + TypeScript
-- **Database** - LanceDB + SQLite
-
+| Category | Technology |
+|----------|-----------|
+| Desktop Framework | [Tauri 2.x](https://v2.tauri.app/) (Rust backend) |
+| Frontend | [Vue 3](https://vuejs.org/) + Composition API + <script setup> |
+| Language | [TypeScript](https://www.typescriptlang.org/) (strict mode) |
+| UI Library | [Naive UI](https://www.naiveui.com/) |
+| Styles | SCSS + CSS Variables |
+| State Management | [Pinia](https://pinia.vuejs.org/) |
+| Router | [Vue Router 4](https://router.vuejs.org/) |
+| Database | [SQLite](https://www.sqlite.org/) (via Tauri SQL Plugin) |
+| Full-text Search | SQLite FTS5 |
+| Build Tool | [Vite](https://vitejs.dev/) |
+| Package Manager | [pnpm](https://pnpm.io/) |
+| Linter | ESLint + [@antfu/eslint-config](https://github.com/antfu/eslint-config) |
+| Formatter | [Prettier](https://prettier.io/) |
+| Unit Test | [Vitest](https://vitest.dev/) |
+| E2E Test | [Playwright](https://playwright.dev/) |
+| Git Hooks | husky + lint-staged |
+| Commit Convention | Conventional Commits + commitlint |
 ## 🛠️ Getting Started
 
-### 📦 Using the App
+### Prerequisites
 
-1. **Download & Install** - Get the installer for your platform from the [project homepage](https://github.com/liqms/PenTip)
-2. **Configure AI Provider** - Set up your API key in the settings page
-3. **Create a Work** - Click "New Work" and choose your creation type
-4. **Start Creating** - Enjoy AI-assisted creation
+- **Node.js** >= 20
+- **pnpm** >= 9
+- **Rust** (latest stable) — [install via rustup](https://rustup.rs/)
+- **Microsoft WebView2** (Windows) — pre-installed on Windows 10+; otherwise get it from [Microsoft](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
 
-### 🤝 Contributing
+### Development
 
-If this project helps you, feel free to give it a Star ⭐
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork the repo** - Fork and clone to your local machine
-2. **Create a branch** - Create a branch for your changes
-3. **Commit your changes** - Commit and push your changes
-4. **Open a Pull Request** - Describe your changes and rationale
-
-```bash
+`ash
 # Clone the project
 git clone https://github.com/liqms/PenTip.git
 cd PenTip
@@ -90,14 +95,34 @@ cd PenTip
 # Install dependencies
 pnpm install
 
-# Configure environment variables
-cp .env.example .env
-# Edit the .env file to configure your API keys
+# Start the Tauri dev server (Vite + Rust backend)
+pnpm tauri dev
+`
 
-# Start the dev server
-pnpm run dev
-```
+The app window will open automatically. The Vite dev server runs at http://localhost:5173 for frontend hot-reload.
 
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| pnpm dev | Start Vite dev server only (frontend) |
+| pnpm tauri dev | Start full Tauri dev environment |
+| pnpm build | Build frontend for production |
+| pnpm tauri build | Build the full desktop app |
+| pnpm test | Run unit tests (Vitest) |
+| pnpm run lint | Run ESLint |
+| pnpm run format | Run Prettier |
+
+### 🤝 Contributing
+
+If this project helps you, feel free to give it a Star ⭐
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork the repo** — Fork and clone to your local machine
+2. **Create a branch** — Create a branch for your changes (codex/feature-name)
+3. **Commit your changes** — Follow [Conventional Commits](https://www.conventionalcommits.org/)
+4. **Open a Pull Request** — Describe your changes and rationale
 ## 📄 License
 
 ### Personal Use

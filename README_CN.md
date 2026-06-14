@@ -1,4 +1,4 @@
-﻿# PenTip
+# PenTip
 
 > 📖 [English (English)](./README.md)
 
@@ -56,22 +56,35 @@
 
 ## 🧰 技术栈
 
-- **前端** - Vue 3 + TypeScript + Naive UI
-- **后端** - Electron + Node.js + TypeScript
-- **数据库** - SQLite
-
+| 类别 | 技术选型 |
+|------|----------|
+| 桌面框架 | [Tauri 2.x](https://v2.tauri.app/)（Rust 后端） |
+| 前端 | [Vue 3](https://vuejs.org/) + Composition API + <script setup> |
+| 语言 | [TypeScript](https://www.typescriptlang.org/)（严格模式） |
+| UI 库 | [Naive UI](https://www.naiveui.com/) |
+| 样式 | SCSS + CSS 变量 |
+| 状态管理 | [Pinia](https://pinia.vuejs.org/) |
+| 路由 | [Vue Router 4](https://router.vuejs.org/) |
+| 数据库 | [SQLite](https://www.sqlite.org/)（通过 Tauri SQL 插件） |
+| 全文搜索 | SQLite FTS5 |
+| 构建工具 | [Vite](https://vitejs.dev/) |
+| 包管理器 | [pnpm](https://pnpm.io/) |
+| 代码检查 | ESLint + @antfu/eslint-config |
+| 格式化 | [Prettier](https://prettier.io/) |
+| 单元测试 | [Vitest](https://vitest.dev/) |
+| E2E 测试 | [Playwright](https://playwright.dev/) |
+| Git 钩子 | husky + lint-staged |
+| 提交规范 | Conventional Commits + commitlint |
 ## 🛠️ 如何使用
 
-### 🤝 如何贡献代码
+### 环境要求
 
-如果这个项目对你有帮助,欢迎给个 Star ⭐
+- **Node.js** >= 20
+- **pnpm** >= 9
+- **Rust**（最新稳定版）— 通过 [rustup](https://rustup.rs/) 安装
+- **Microsoft WebView2**（Windows）— Win10+ 通常已预装，否则从 [Microsoft 官网](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) 获取
 
-欢迎贡献代码！请遵循以下步骤：
-
-1. **Fork 仓库**：Fork 并克隆到您的本地机器
-2. **创建分支**：为您的更改创建分支
-3. **提交更改**：提交并推送您的更改
-4. **打开 Pull Request**：描述您的更改和原因
+### 本地开发
 
 ```bash
 # 克隆项目
@@ -81,13 +94,34 @@ cd PenTip
 # 安装依赖
 pnpm install
 
-# 配置环境变量
-cp .env.example .env
-# 编辑.env文件，配置API密钥等信息
-
-# 启动开发服务器
-pnpm run dev
+# 启动 Tauri 开发环境（Vite 前端 + Rust 后端）
+pnpm tauri dev
 ```
+
+应用窗口会自动打开。Vite 开发服务器运行在 http://localhost:5173，支持前端热更新。
+
+### 常用命令
+
+| 命令 | 说明 |
+|------|------|
+| pnpm dev | 仅启动 Vite 前端开发服务器 |
+| pnpm tauri dev | 启动完整 Tauri 开发环境 |
+| pnpm build | 构建前端生产版本 |
+| pnpm tauri build | 构建完整桌面应用安装包 |
+| pnpm test | 运行单元测试（Vitest） |
+| pnpm run lint | 运行 ESLint 代码检查 |
+| pnpm run format | 运行 Prettier 代码格式化 |
+
+### 🤝 如何贡献代码
+
+如果这个项目对你有帮助，欢迎给个 Star ⭐
+
+欢迎贡献代码！请遵循以下步骤：
+
+1. **Fork 仓库** — Fork 并克隆到本地
+2. **创建分支** — 为你的更改创建分支（codex/feature-name）
+3. **提交更改** — 遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范
+4. **打开 Pull Request** — 描述你的更改和原因
 
 ## 📄 许可证
 

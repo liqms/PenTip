@@ -1,0 +1,25 @@
+[package]
+name = "pentip"
+version = "0.1.0"
+description = "PenTip - 碎片想法到完整作品的创作闭环"
+authors = ["liqms"]
+license = "AGPL-3.0"
+repository = "https://github.com/liqms/PenTip"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "pentip_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+log = "0.4"
+uuid = { version = "1", features = ["v4"] }
+tauri = { version = "2", default-features = false, features = ["wry", "common-controls-v6", "dynamic-acl"] }
+tauri-plugin-log = "2"
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
