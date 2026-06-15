@@ -1,4 +1,4 @@
-﻿# PenTip Agents Guide
+# PenTip Agents Guide
 
 This file provides context and conventions for AI agents working on the PenTip project.
 
@@ -17,9 +17,8 @@ PenTip（笔触）is a cross-platform desktop note-taking and creation app built
 | Styles | SCSS + CSS variables |
 | State management | Pinia |
 | Router | Vue Router 4 |
-| Database | SQLite (via Tauri SQL plugin) |
+| Database | SQLite (via sqlx) |
 | Full-text search | SQLite FTS5 |
-| ORM | Drizzle ORM |
 | Build tool | Vite |
 | Package manager | pnpm |
 | Linter | ESLint + @antfu/eslint-config |
@@ -50,69 +49,122 @@ PenTip/
 │   ├── router/
 │   ├── stores/                 # Pinia (app, notes, projects, settings)
 │   ├── composables/            # Reusable composables
+│   ├── api/                    # Tauri IPC call wrappers
+│   │   ├── index.ts
+│   │   ├── fragment.ts
+│   │   ├── tag.ts
+│   │   ├── project.ts
+│   │   ├── page.ts
+│   │   └── search.ts
 │   ├── components/
 │   │   ├── common/             # Naive UI wrapper components
 │   │   ├── layout/             # Layout (Sidebar, Header, Content)
 │   │   ├── capture/            # Quick capture panels
 │   │   └── ai/                 # AI components (future use)
 │   ├── views/                  # Page views (Home, Notes, Projects, Settings, Editor)
-│   ├── services/
-│   │   └── storage/            # SQLite + FTS5 services
 │   ├── utils/
-│   ├── types/                  # TypeScript interfaces
+│   ├── types/                  # TypeScript interfaces & type aliases
+│   │   ├── index.ts               #   Barrel export
+│   │   ├── fragment.ts            #   FragmentRow, FragmentType, FragmentRelation
+│   │   ├── tag.ts                 #   TagRow, TagTargetType, TagRelation
+│   │   ├── project.ts            #   ProjectRow, ProjectContentType
+│   │   ├── page.ts               #   PageRow
+│   │   └── global.d.ts           #   Vite/Vue type declarations
 │   └── i18n/                   # i18n (enUS, zhCN)
 ├── src-tauri/                  # Rust backend
 │   ├── Cargo.toml
 │   ├── tauri.conf.json
+│   ├── sql/                    # SQL migration files
+│   │   └── 001_create_tables.sql
 │   ├── src/
-│   │   ├── main.rs / lib.rs
-│   │   ├── commands/           # IPC commands (notes, file)
-│   │   ├── db/                 # DB operations + migrations
-│   │   └── utils/
-│   └── capabilities/
+│   │   ├── main.rs
+│   │   ├── lib.rs
+│   │   ├── commands/           # Tauri IPC command handlers
+│   │   │   ├── mod.rs
+│   │   │   ├── fragment.rs
+│   │   │   ├── tag.rs
+│   │   │   ├── project.rs
+│   │   │   ├── page.rs
+│   │   │   └── file.rs
+│   │   ├── db/                 # Unified data access layer (sqlx + SQLite)
+│   │   │   ├── mod.rs
+│   │   │   └── queries.rs
+│   │   ├── services/           # Business logic layer
+│   │   │   ├── mod.rs
+│   │   │   └── storage/        # Storage service (SQLite + FTS5)
+│   │   │       └── mod.rs
+│   │   └── utils/              # Shared utilities
+│   │       ├── mod.rs
+│   │       └── helpers.rs
+│   └── capabilities/           # Tauri permissions
+│       └── default.json
 ├── tests/                      # unit/ + e2e/
+├── tests/                      # Integration tests (discovered by cargo test)
+│   ├── tests.rs                #   Test entry point
+│   ├── common/                 #   Shared test helpers
+│   │   └── mod.rs
+│   └── unit/                   #   Unit tests per component
+│       ├── mod.rs
+│       └── queries.rs          #   Data layer tests (21 cases)
 ├── docs/                       # Project docs
 └── ...root config files
 ```
 
 ## Data Model (Core Entities)
 
-### Fragment (碎片笔记)
 ```typescript
-interface Fragment {
+// ─── Fragment ─────────────────────────────
+type FragmentType = 'idea' | 'todo' | 'memo' | 'diary' | 'work-log'
+type FragmentTargetType = 'project' | 'page'
+
+interface FragmentRow {
   id: string
   content: string
-  type: 'idea' | 'todo' | 'memo' | 'diary' | 'work-log'  // Business scenario
-  tags: string[]
+  type: FragmentType
   source?: string
   created_at: number
   updated_at: number
-  deleted_at: number | null      // Soft delete
+  deleted_at: number | null            // Soft delete
 }
-```
 
-### Project (项目)
-```typescript
-interface Project {
+// ─── Tag ──────────────────────────────────
+type TagTargetType = 'fragment' | 'project' | 'page'
+
+interface TagRow {
+  id: string
+  name: string
+  created_at: number
+}
+
+interface TagRelation {
+  tag_id: string
+  target_type: TagTargetType
+  target_id: string
+  created_at: number
+}
+
+// ─── Project ──────────────────────────────
+type ProjectContentType = 'novel' | 'article' | 'script' | 'image-text' | 'video' | 'audio'
+type ProjectStatus = 'in-progress' | 'completed'
+
+interface ProjectRow {
   id: string
   title: string
   description?: string
-  type: 'novel' | 'article' | 'script' | 'image-text' | 'video' | 'audio'
-  status: 'in-progress' | 'completed'
+  type: ProjectContentType
+  status: ProjectStatus
   metadata: Record<string, unknown>
   created_at: number
   updated_at: number
   deleted_at: number | null
 }
-```
 
-### Page (页面)
-```typescript
-interface Page {
+// ─── Page ─────────────────────────────────
+interface PageRow {
   id: string
   project_id: string
   title: string
-  content: string
+  content?: string
   order: number
   created_at: number
   updated_at: number
@@ -120,18 +172,7 @@ interface Page {
 }
 ```
 
-### FragmentRelation (关联表)
-```typescript
-interface FragmentRelation {
-  id: string
-  fragment_id: string
-  target_type: 'project' | 'page'
-  target_id: string
-  created_at: number
-}
-```
-
-Storage: all data in SQLite, Markdown only for export/backup.
+Storage: all data in SQLite, export/backup via Markdown.
 
 ## Coding Conventions
 
@@ -173,17 +214,53 @@ Storage: all data in SQLite, Markdown only for export/backup.
 - Commits follow Conventional Commits: `feat(capture): add global shortcut`
 - PRs merge via squash to `dev`, releases from `dev` to `main`
 
+## Error Codes
+
+Commands return `Result<T, AppError>`. The frontend receives a JSON object:
+
+```json
+{ "code": "FRAGMENT_NOT_FOUND", "message": "Fragment not found: abc-123" }
+```
+
+### Codes
+
+| Code | Meaning |
+|------|---------|
+| `DB_INIT` | Database initialization fails |
+| `DB_QUERY` | Database query/operation fails |
+| `FRAGMENT_NOT_FOUND` | Fragment not found by id |
+| `PROJECT_NOT_FOUND` | Project not found by id |
+| `PAGE_NOT_FOUND` | Page not found by id |
+| `TAG_NOT_FOUND` | Tag not found by id |
+| `CONFIG_LOAD` | App config load fails |
+| `CONFIG_SAVE` | App config save fails |
+| `INTERNAL` | Unexpected internal error |
+
+### TypeScript
+
+```typescript
+// src/types/error.ts
+const ErrorCode = { ... } as const
+type ErrorCode = keyof typeof ErrorCode
+interface AppError { code: ErrorCode; message: string }
+
+try {
+  const result = await invoke("create_fragment", { content })
+} catch (e) {
+  const err = e as AppError
+  if (err.code === "DB_QUERY") { /* handle */ }
+}
+```
+
 ## Commands
 
 ```bash
-pnpm install          # Install deps
-pnpm run dev          # Start dev server (Vite + Tauri)
-pnpm run build        # Build for production
-pnpm test             # Run unit tests (Vitest)
-pnpm test run         # Run tests once (CI mode)
-pnpm run lint         # ESLint check
-pnpm run format       # Prettier format
-pnpm run tauri        # Tauri CLI commands
+pnpm dev          # Tauri dev mode (Vite + Rust backend, app window auto-opens)
+pnpm build        # Build production desktop app
+pnpm test         # Run all tests with detailed report (Vitest)
+pnpm lint         # ESLint check
+pnpm format       # Prettier format (src/)
+pnpm typecheck    # TypeScript type check (vue-tsc)
 ```
 
 ## Storage Paths

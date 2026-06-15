@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { generateId } from '../utils/format'
-import type { Fragment } from '../types/note'
+import type { FragmentRow } from '../types/fragment'
 
 export function useQuickCapture() {
   const visible = ref(false)
@@ -9,9 +9,9 @@ export function useQuickCapture() {
   function open() { visible.value = true }
   function close() { visible.value = false; content.value = '' }
 
-  function save(): Fragment | null {
+  function save(): FragmentRow | null {
     if (!content.value.trim()) return null
-    const note: Fragment = {
+    const note: FragmentRow = {
       id: generateId(),
       content: content.value,
       type: 'idea',

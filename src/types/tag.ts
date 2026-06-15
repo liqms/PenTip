@@ -1,4 +1,7 @@
-export interface Tag {
+/// Entity types that can have tags attached.
+export type TagTargetType = 'fragment' | 'project' | 'page'
+
+export interface TagRow {
   id: string
   name: string
   created_at: number
@@ -6,7 +9,7 @@ export interface Tag {
 
 export interface TagRelation {
   tag_id: string
-  target_type: 'fragment' | 'project' | 'page'
+  target_type: TagTargetType
   target_id: string
   created_at: number
 }
